@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>Twitch Token Generator</title>
@@ -43,7 +44,7 @@
         }
     </style>
 </head>
-<body class="bg-dark" onload="checkUrl()">
+<body class="bg-dark">
 
     <div class="container main flex-centered">
         <form id="settings-form" class="form-horizontal form-group" method="post" action="submit">
@@ -63,13 +64,13 @@
                             <div id="scopes-div">
                                 <label id="scopes-label" class="form-label">Token Scopes</label>
                                 <div id="scope-buttons" class="flex-centered">
-                                    <button id="chat-scopes" type="button" onclick="setChatScopes()" class="btn btn-sm" aria-label="Close" role="button">Set Chat Scopes</button>
-                                    <button id="stream-scopes" type="button" onclick="setStreamScopes()" class="btn btn-sm" aria-label="Close" role="button">Set Stream Scopes</button>
-                                    <button id="follow-scopes" type="button" onclick="setFollowScopes()" class="btn btn-sm" aria-label="Close" role="button">Set Follow Scopes</button>
-                                    <button id="all-scopes" type="button" onclick="setAllScopes()" class="btn btn-sm" aria-label="Close" role="button">Set All Scopes</button>
+                                    <button id="chat-scopes" type="button" onclick="setChatScopes()" class="btn btn-sm">Set Chat Scopes</button>
+                                    <button id="stream-scopes" type="button" onclick="setStreamScopes()" class="btn btn-sm">Set Stream Scopes</button>
+                                    <button id="follow-scopes" type="button" onclick="setFollowScopes()" class="btn btn-sm">Set Follow Scopes</button>
+                                    <button id="all-scopes" type="button" onclick="setAllScopes()" class="btn btn-sm">Set All Scopes</button>
                                 </div>
                                 <div id="get-token-div" class="flex-centered">
-                                    <button disabled id="get-token-button" onclick="getToken()" type="button" class="btn" aria-label="Close" role="button">Get Token</button>
+                                    <button disabled id="get-token-button" onclick="getToken()" type="button" class="btn">Get Token</button>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +79,6 @@
             </div>
         </form>
     </div>
-
 
     <script>
         var baseUrl = "https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=86azf9wxx8p07zlwesdlnkuuarr0gh&redirect_uri=https://nonukry.github.io/token-generator/&scope=";
@@ -91,52 +91,55 @@
         var allScope = "analytics:read:extensions+analytics:read:games+bits:read+channel:bot+channel:manage:ads+channel:read:ads+channel:manage:broadcast+channel:read:charity+channel:edit:commercial+channel:read:editors+channel:manage:extensions+channel:read:goals+channel:read:guest_star+channel:manage:guest_star+channel:read:hype_train+channel:manage:moderators+channel:read:polls+channel:manage:polls+channel:read:predictions+channel:manage:predictions+channel:manage:raids+channel:read:redemptions+channel:manage:redemptions+channel:manage:schedule+channel:read:stream_key+channel:read:subscriptions+channel:manage:videos+channel:read:vips+channel:manage:vips+channel:moderate+clips:edit+moderation:read+moderator:manage:announcements+moderator:manage:automod+moderator:read:automod_settings+moderator:manage:automod_settings+moderator:read:banned_users+moderator:manage:banned_users+moderator:read:blocked_terms+moderator:manage:blocked_terms+moderator:read:chat_messages+moderator:manage:chat_messages+moderator:read:chat_settings+moderator:manage:chat_settings+moderator:read:chatters+moderator:read:followers+moderator:read:guest_star+moderator:manage:guest_star+moderator:read:moderators+moderator:read:shield_mode+moderator:manage:shield_mode+moderator:read:shoutouts+moderator:manage:shoutouts+moderator:read:suspicious_users+moderator:read:unban_requests+moderator:manage:unban_requests+moderator:read:vips+moderator:read:warnings+moderator:manage:warnings+user:bot+user:edit+user:edit:broadcast+user:read:blocked_users+user:manage:blocked_users+user:read:broadcast+user:read:chat+user:manage:chat_color+user:read:email+user:read:emotes+user:read:follows+user:read:moderated_channels+user:read:subscriptions+user:read:whispers+user:manage:whispers+user:write:chat+chat:edit+chat:read+whispers:read";
 
         var allScopes = [
-                chatScopes,
-                streamScopes,
-                followScopes,
-                revenueScopes,
-                allScope
+            chatScopes,
+            streamScopes,
+            followScopes,
+            revenueScopes,
+            allScope
         ].join('+');
 
         let twitch_token = document.getElementById("twitch_token");
         let token_button = document.getElementById("get-token-button");
 
         var tokenHash = location.hash.substr(1);
-        var accessToken = tokenHash.substr(tokenHash.indexOf('access_token=')).split('&')[0].split('=')[1];
+        var accessToken = tokenHash.includes("access_token=")
+            ? tokenHash.substr(tokenHash.indexOf('access_token=')).split('&')[0].split('=')[1]
+            : null;
 
         function checkUrl() {
-                if (accessToken) {
-                        document.getElementById("scopes-div").style.display = "none";
-                        document.getElementById("token-div").style.display = "block";
-                        twitch_token.value = accessToken;
-                }
+            if (accessToken) {
+                document.getElementById("scopes-div").style.display = "none";
+                document.getElementById("token-div").style.display = "block";
+                twitch_token.value = accessToken;
+            }
         }
 
         function setChatScopes() {
-                twitch_token.value = baseUrl + chatScopes;
-                token_button.disabled = false;
+            twitch_token.value = baseUrl + chatScopes;
+            token_button.disabled = false;
         }
 
         function setStreamScopes() {
-                twitch_token.value = baseUrl + streamScopes;
-                token_button.disabled = false;
+            twitch_token.value = baseUrl + streamScopes;
+            token_button.disabled = false;
         }
 
         function setFollowScopes() {
-                twitch_token.value = baseUrl + followScopes;
-                token_button.disabled = false;
+            twitch_token.value = baseUrl + followScopes;
+            token_button.disabled = false;
         }
 
         function setAllScopes() {
-                twitch_token.value = baseUrl + allScopes;
-                token_button.disabled = false;
+            twitch_token.value = baseUrl + allScopes;
+            token_button.disabled = false;
         }
 
         function getToken() {
-                document.location.href = twitch_token.value;
+            document.location.href = twitch_token.value;
         }
-    </script>
 
+        window.onload = checkUrl;
+    </script>
 
 </body>
 </html>
