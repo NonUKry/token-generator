@@ -86,7 +86,8 @@
         var chatScopes = "chat:read+chat:edit+channel:moderate+whispers:read+whispers:edit"
         var streamScopes = "channel:read:stream_key+channel:manage:broadcast+channel_editor"
         var followScopes = "user:edit:follows"
-        var allScopes = chatScopes + "+" + streamScopes + "+" + followScopes
+        var revenueScopes = "user:read:email+channel:read:ads+bits:read+channel:read:goals+channel:read:charity+channel:read:hype_train+channel:read:subscriptions";
+        var allScopes = chatScopes + "+" + streamScopes + "+" + followScopes + "+" + revenueScopes
 
         let twitch_token = document.getElementById("twitch_token")
         let token_button = document.getElementById("get-token-button")
